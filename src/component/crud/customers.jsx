@@ -1,6 +1,6 @@
 import usePostService from "../api/2.services";
 import { useDispatch } from "react-redux";
-import { setDataRoutes, setDataById } from "../0.Store/routes";
+import { setDataCustomers, setDataById } from "../0.Store/customers";
 
 export const CRUD_Customers = () => {
   const collection = "iwal_customers";
@@ -10,7 +10,7 @@ export const CRUD_Customers = () => {
 
   const fetchData_Customers = async () => {
     const data = await getData(collection);
-    dispatch(setDataRoutes(data));
+    dispatch(setDataCustomers(data));
   };
   const fetchDataById_Customers = async (id) => {
     const data = await getDataById(collection, id);

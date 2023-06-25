@@ -119,7 +119,7 @@ export default function FormAdd({ open, setOpen }) {
             sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
           >
             <Typography component="h3" variant="h5" align="center">
-              Tambah data bus
+              Tambah data rute
             </Typography>
             <Grid container sx={{ mt: 2 }} spacing={2}>
               <Grid item={true} sm={12} lg={12}>

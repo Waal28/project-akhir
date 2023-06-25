@@ -2,19 +2,19 @@ import React, { useState } from "react";
 import { Delete, ModeEdit } from "@mui/icons-material";
 import { Grid, IconButton } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { setId } from "../../0.Store/busses";
-import { CRUD_busses } from "../../crud/busses";
+import { setId } from "../../0.Store/customers";
+import { CRUD_Customers } from "../../crud/customers";
 
-const DataBusses = () => {
-  const { fetchDataById_Busses } = CRUD_busses();
+const DataCustomers = () => {
+  const { fetchDataById_Customers } = CRUD_Customers();
   const [clickDelete, setClickDelete] = useState(false);
   const [clickUpdate, setClickUpdate] = useState(false);
   const [text, setText] = useState("");
-  const { dataBusses } = useSelector((state) => state.busses);
+  const { dataCustomers } = useSelector((state) => state.customers);
   const dispatch = useDispatch();
 
   const handleClickUpdate = (id) => {
-    fetchDataById_Busses(id);
+    fetchDataById_Customers(id);
     setClickUpdate(true);
   };
   const handleClickDelete = (code, id) => {
@@ -36,8 +36,8 @@ const DataBusses = () => {
     );
   };
 
-  function createData(no, code, busName, plat, tglInput, aksi) {
-    return { no, code, busName, plat, tglInput, aksi };
+  function createData(no, idCustomers, nama, noHp, aksi) {
+    return { no, idCustomers, nama, noHp, aksi };
   }
 
   const columns = [
@@ -46,26 +46,25 @@ const DataBusses = () => {
       label: "No",
       minWidth: 30,
     },
-    { id: "code", label: "Kode Bus", minWidth: 90 },
     {
-      id: "busName",
-      label: "Nama Bus",
+      id: "idCustomers",
+      label: "Id Customers",
       minWidth: 100,
-      align: "right",
+      align: "center",
       // format: (value) => value.toLocaleString("en-US"),
     },
     {
-      id: "plat",
-      label: "No Plat",
+      id: "nama",
+      label: "Nama",
       minWidth: 100,
-      align: "right",
+      align: "left",
       // format: (value) => value.toLocaleString("en-US"),
     },
     {
-      id: "tglInput",
-      label: "Waktu Input",
+      id: "noHp",
+      label: "No Telepon",
       minWidth: 100,
-      align: "right",
+      align: "left",
       // format: (value) => value.toLocaleString("en-US"),
     },
     {
@@ -76,14 +75,13 @@ const DataBusses = () => {
       // format: (value) => value.toLocaleString("en-US"),
     },
   ];
-  const rows = dataBusses.map((d, index) =>
+  const rows = dataCustomers.map((d, index) =>
     createData(
       index + 1,
-      d.kode,
+      d.idCustomers,
       d.nama,
-      d.plat,
-      d.tgl_input,
-      _aksi(d.kode, d.id)
+      d.noHp,
+      _aksi(d.idCustomers, d.id)
     )
   );
   return {
@@ -97,4 +95,4 @@ const DataBusses = () => {
     _aksi,
   };
 };
-export default DataBusses;
+export default DataCustomers;

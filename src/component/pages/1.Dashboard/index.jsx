@@ -47,7 +47,7 @@ const Dashboard = () => {
       </Typography>
       <Grid container spacing={3}>
         {dataAdmin.slice(1).map((data, index) => (
-          <Grid key={index} item={true} sm={3} sx={{}}>
+          <Grid key={index} item={true} xs={8} sm={8} md={5} lg={3}>
             <CardComp
               header={data.page}
               icon={data.icon}

@@ -121,7 +121,7 @@ export default function FormUpdate({ open, setOpen }) {
                     dispatch(setDataById({ ...dataById, plat: e.target.value }))
                   }
                   fullWidth
-                  requireds
+                  required
                 />
               </Grid>
             </Grid>

@@ -22,8 +22,8 @@ import {
   setAlertStatus,
   setAlertText,
 } from "../../../0.Store/comp";
-import { setDataById } from "../../../0.Store/busses";
-import { CRUD_busses } from "../../../crud/busses";
+import { setDataById } from "../../../0.Store/customers";
+import { CRUD_Customers } from "../../../crud/customers";
 
 const defaultTheme = createTheme();
 
@@ -31,15 +31,15 @@ export default function FormUpdate({ open, setOpen }) {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
-  const { updateData_Busses } = CRUD_busses();
-  const { dataById } = useSelector((state) => state.busses);
+  const { updateData_Customers } = CRUD_Customers();
+  const { dataById } = useSelector((state) => state.customers);
   const dispatch = useDispatch();
 
   const handleClose = () => {
     setOpen(false);
   };
   const handleSave = () => {
-    updateData_Busses(dataById.id, dataById);
+    updateData_Customers(dataById.id, dataById);
     setOpen(false);
     dispatch(setAlertOpen(true));
     dispatch(setAlertStatus(true));
@@ -84,15 +84,15 @@ export default function FormUpdate({ open, setOpen }) {
             sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
           >
             <Typography component="h3" variant="h5" align="center">
-              Edit data bus
+              Edit data pelanggan
             </Typography>
             <Grid container sx={{ mt: 2 }} spacing={2}>
               <Grid item={true} sm={12} lg={12}>
                 <TextField
                   id="filled-basic"
-                  label="Kode Bus (auto)"
+                  label="Id Pelanggan (auto)"
                   variant="filled"
-                  value={dataById.kode}
+                  value={dataById.idCustomers}
                   readOnly
                   fullWidth
                   required
@@ -101,7 +101,7 @@ export default function FormUpdate({ open, setOpen }) {
               <Grid item={true} sm={12} lg={12}>
                 <TextField
                   id="filled-basic"
-                  label="Nama Bus"
+                  label="Nama Pelanggan"
                   variant="filled"
                   value={dataById.nama}
                   onChange={(e) =>
@@ -114,14 +114,14 @@ export default function FormUpdate({ open, setOpen }) {
               <Grid item={true} sm={12} lg={12}>
                 <TextField
                   id="filled-basic"
-                  label="No Plat"
+                  label="No Telepon"
                   variant="filled"
-                  value={dataById.plat}
+                  value={dataById.noHp}
                   onChange={(e) =>
-                    dispatch(setDataById({ ...dataById, plat: e.target.value }))
+                    dispatch(setDataById({ ...dataById, noHp: e.target.value }))
                   }
                   fullWidth
-                  requireds
+                  required
                 />
               </Grid>
             </Grid>

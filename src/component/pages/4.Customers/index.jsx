@@ -11,17 +11,17 @@ import {
 import StickyHeadTable from "../../2.Table/stickyTable.jsx";
 import PopUp from "../../4.popUp/index.jsx";
 import { useLocalStorage } from "../../5.hooks/localStorage";
-import { CRUD_busses } from "../../crud/busses";
+import { CRUD_Customers } from "../../crud/customers";
 import FormAdd from "./1.formAdd/index.jsx";
 import FormUpdate from "./2.form Update/index.jsx";
-import DataBusses from "./dataBusses";
+import DataCustomers from "./dataCustomers";
 
 const Customers = () => {
   const [credential] = useLocalStorage("credential");
   const [usernameStorage] = useLocalStorage("username");
   const [clickAdd, setClickAdd] = useState(false);
-  const { fetchData_Busses, deleteData_Busses } = CRUD_busses();
-  const { id } = useSelector((state) => state.busses);
+  const { fetchData_Customers, deleteData_Customers } = CRUD_Customers();
+  const { id } = useSelector((state) => state.customers);
   const {
     columns,
     rows,
@@ -30,12 +30,12 @@ const Customers = () => {
     clickUpdate,
     setClickUpdate,
     text,
-  } = DataBusses();
+  } = DataCustomers();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleYesClickDelete = () => {
-    deleteData_Busses(id);
+    deleteData_Customers(id);
     setClickDelete(false);
     dispatch(setAlertOpen(true));
     dispatch(setAlertStatus(true));
@@ -48,7 +48,7 @@ const Customers = () => {
     }
   }, [credential, usernameStorage, navigate]);
   useEffect(() => {
-    fetchData_Busses();
+    fetchData_Customers();
   }, []);
   return (
     <Grid container>

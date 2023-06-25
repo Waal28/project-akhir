@@ -22,7 +22,7 @@ import {
   setAlertStatus,
   setAlertText,
 } from "../../../0.Store/comp";
-import { CRUD_busses } from "../../../crud/busses";
+import { CRUD_Customers } from "../../../crud/customers";
 
 const defaultTheme = createTheme();
 
@@ -30,39 +30,40 @@ export default function FormAdd({ open, setOpen }) {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
-  const { createData_Busses } = CRUD_busses();
+  const { createData_Customers } = CRUD_Customers();
   const dispatch = useDispatch();
-  const [bus, setBus] = React.useState({
-    kode: "",
+  const [customers, setCustomers] = React.useState({
+    idCustomers: "",
     nama: "",
-    plat: "",
-    tgl_input: new Date().toLocaleString(),
+    noHp: "",
   });
   const handleClose = () => {
     setOpen(false);
   };
   const handleSave = () => {
-    if (/[0-9]/.test(bus.nama)) {
+    if (/[0-9]/.test(customers.nama)) {
       setOpen(false);
       dispatch(setAlertOpen(true));
       dispatch(setAlertStatus(false));
-      dispatch(setAlertText("Nama bus hanya bisa diisi dengan huruf"));
+      dispatch(setAlertText("Nama pelanggan hanya bisa diisi dengan huruf"));
     } else {
-      createData_Busses(bus);
+      createData_Customers(customers);
       setOpen(false);
       dispatch(setAlertOpen(true));
       dispatch(setAlertStatus(true));
-      dispatch(setAlertText("Bus berhasil ditambah"));
+      dispatch(setAlertText("Pelanggan berhasil ditambah"));
     }
-    setBus({
-      kode: "",
+    setCustomers({
+      idCustomers: "",
       nama: "",
-      plat: "",
-      tgl_input: new Date().toLocaleString(),
+      noHp: "",
     });
   };
   React.useEffect(() => {
-    setBus({ ...bus, kode: `BS-${Math.floor(Math.random() * 9999) + 1000}` });
+    setCustomers({
+      ...customers,
+      idCustomers: `CS-${Math.floor(Math.random() * 9999) + 1000}`,
+    });
   }, [open]);
   return (
     <Dialog
@@ -103,15 +104,15 @@ export default function FormAdd({ open, setOpen }) {
             sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
           >
             <Typography component="h3" variant="h5" align="center">
-              Tambah data bus
+              Tambah data pelanggan
             </Typography>
             <Grid container sx={{ mt: 2 }} spacing={2}>
               <Grid item={true} sm={12} lg={12}>
                 <TextField
                   id="filled-basic"
-                  label="Kode Bus (auto)"
+                  label="Id Pelanggan (auto)"
                   variant="filled"
-                  value={bus.kode}
+                  value={customers.idCustomers}
                   readOnly
                   fullWidth
                   required
@@ -120,10 +121,12 @@ export default function FormAdd({ open, setOpen }) {
               <Grid item={true} sm={12} lg={12}>
                 <TextField
                   id="filled-basic"
-                  label="Nama Bus"
+                  label="Nama Pelanggan"
                   variant="filled"
-                  value={bus.nama}
-                  onChange={(e) => setBus({ ...bus, nama: e.target.value })}
+                  value={customers.nama}
+                  onChange={(e) =>
+                    setCustomers({ ...customers, nama: e.target.value })
+                  }
                   fullWidth
                   required
                 />
@@ -131,10 +134,13 @@ export default function FormAdd({ open, setOpen }) {
               <Grid item={true} sm={12} lg={12}>
                 <TextField
                   id="filled-basic"
-                  label="No Plat"
+                  label="No Telepon"
+                  type="number"
                   variant="filled"
-                  value={bus.plat}
-                  onChange={(e) => setBus({ ...bus, plat: e.target.value })}
+                  value={customers.noHp}
+                  onChange={(e) =>
+                    setCustomers({ ...customers, noHp: e.target.value })
+                  }
                   fullWidth
                   required
                 />
