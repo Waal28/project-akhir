@@ -1,22 +1,39 @@
+import { Grid, Typography } from "@mui/material";
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
+import {} from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useLocalStorage } from "../../5.hooks/localStorage";
 
 const Bokings = () => {
-  const { login } = useSelector((state) => state.comp);
+  const [credential] = useLocalStorage("credential");
+  const [usernameStorage] = useLocalStorage("username");
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (login) {
-      console.log("anda berhasil login");
+    if (credential || usernameStorage) {
     } else {
       navigate("/login");
     }
-  }, [login]);
+  }, [credential, usernameStorage, navigate]);
+
   return (
-    <div>
-      <h2>Bokings</h2>
-    </div>
+    <Grid container>
+      <Typography
+        variant="h3"
+        component="div"
+        sx={{
+          borderBottom: "2px solid gray",
+          borderRadius: 1,
+          mb: 3,
+          pb: 1,
+          px: 1,
+        }}
+      >
+        Bokings
+      </Typography>
+      <Grid container spacing={3}></Grid>
+    </Grid>
   );
 };
 

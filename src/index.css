@@ -1,8 +1,32 @@
+:root {
+  --color1: #00838f;
+  --color2: #006064;
+  --color3: #ffdc00;
+  --color4: #ffffff;
+}
+@font-face {
+  font-family: "HindVadodara Bold";
+  src: url("/src/assets/font/HindVadodara-Bold.ttf");
+}
+@font-face {
+  font-family: "HindVadodara Light";
+  src: url("/src/assets/font/HindVadodara-Light.ttf");
+}
+@font-face {
+  font-family: "HindVadodara Medium";
+  src: url("/src/assets/font/HindVadodara-Medium.ttf");
+}
+@font-face {
+  font-family: "HindVadodara Regular";
+  src: url("/src/assets/font/HindVadodara-Regular.ttf");
+}
+@font-face {
+  font-family: "HindVadodara SemiBold";
+  src: url("/src/assets/font/HindVadodara-SemiBold.ttf");
+}
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: "HindVadodara Light";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: aliceblue;
@@ -33,4 +57,32 @@ code {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: rgb(161, 161, 161);
+}
+
+.MuiOutlinedInput-notchedOutline {
+  border-color: var(--color2) !important;
+}
+.MuiFilledInput-root {
+  border-bottom: 1px solid var(--color2) !important;
+}
+.MuiInput-root {
+  border-bottom: 1px solid var(--color2) !important;
+}
+.MuiButton-root {
+  background-color: var(--color1) !important;
+  color: var(--color4) !important;
+}
+.MuiButton-root:hover {
+  background-color: var(--color2) !important;
+}
+.MuiInputLabel-root {
+  color: var(--color1) !important;
+}
+.MuiTableCell-head {
+  color: var(--color4) !important;
+  background-color: var(--color2) !important;
+}
+.MuiTablePagination-root {
+  color: var(--color4) !important;
+  background-color: var(--color2) !important;
 }

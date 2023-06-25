@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { dataAdmin } from "./dataSidebar";
 import {
   Box,
@@ -31,13 +31,17 @@ import {
   Group,
   Logout,
 } from "@mui/icons-material";
-import { Link, useLocation } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import styles from "./index.module.css";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import Marquee from "react-fast-marquee";
 import { cyan } from "@mui/material/colors";
 import logo from "./logo1.png";
-import PopUp from "../4.popUp";
+import { useLocalStorage } from "../5.hooks/localStorage";
+import { decodeToken } from "react-jwt";
+import { setUser } from "../0.Store/comp";
+import AlertLogin from "../6.alertLogin";
+import LogOutComp from "../pages/8.logout";
+import AlertComp from "../7.alertComp";
 
 const _white = cyan[50];
 const colorSelected = cyan[900];
@@ -117,7 +121,6 @@ const DrawerComp = styled(Drawer, {
 }));
 
 const SideBar = ({ children }) => {
-  const datas = dataAdmin;
   const theme = useTheme();
   const [open, setOpen] = useState(true);
 
@@ -129,7 +132,7 @@ const SideBar = ({ children }) => {
   };
 
   //
-  const { color1 } = useSelector((state) => state.comp);
+  const { color1, color3, user } = useSelector((state) => state.comp);
   const dispatch = useDispatch();
   const [openPopUp, setOpenPopUp] = useState(false);
   const location = useLocation();
@@ -138,7 +141,29 @@ const SideBar = ({ children }) => {
   const handleListItemClick = (event, index) => {
     setSelectedPath(index);
   };
+  // cek login
+  const [credential] = useLocalStorage("credential");
+  const [usernameStorage] = useLocalStorage("username");
+  const datas = dataAdmin;
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    if (credential || usernameStorage) {
+    } else {
+      navigate("/login");
+    }
+  }, [credential, usernameStorage, navigate]);
+
+  useEffect(() => {
+    const userInfo = !credential
+      ? {
+          name: "Iwal Faizul",
+          picture:
+            "https://i.kym-cdn.com/entries/icons/original/000/038/638/the_wock.jpg",
+        }
+      : decodeToken(credential);
+    dispatch(setUser(userInfo));
+  }, [dispatch, credential]);
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -162,29 +187,28 @@ const SideBar = ({ children }) => {
           </IconButton>
           <Marquee speed={60}>
             <Typography variant="h6" noWrap component="div">
-              Selamat Datang Admin
+              Welcome {user.name} (admin)
             </Typography>
           </Marquee>
         </Toolbar>
       </AppBarComp>
-      <DrawerComp variant="permanent" open={open} sx={{}}>
+      <DrawerComp variant="permanent" open={open}>
         <DrawerHeader sx={{ bgcolor: color1 }}>
-          <Grid container>
+          <Grid container sx={{ justifyContent: "space-between" }}>
             <Grid
               item={true}
-              md={6}
-              sx={{ display: "flex", alignItems: "center" }}
+              sm={6}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+              }}
             >
-              <Avatar
-                alt="user"
-                src="https://i.kym-cdn.com/entries/icons/original/000/038/638/the_wock.jpg"
-                sx={{ margin: 1 }}
-              />
-              <Typography color={_white}>Iwal</Typography>
+              <Avatar alt={user.name} src={user.picture} sx={{ margin: 1 }} />
+              <Typography color={_white}>{user.name}</Typography>
             </Grid>
             <Grid
               item={true}
-              md={6}
+              sm={6}
               sx={{
                 display: "flex",
                 alignItems: "center",
@@ -220,7 +244,7 @@ const SideBar = ({ children }) => {
               width: 180,
             }}
           />
-          <Typography color="#FFDC00" sx={{ margin: 1, fontSize: 12 }}>
+          <Typography color={color3} sx={{ margin: 1, fontSize: 12 }}>
             Berjalan Sesuai Keinginanmu
           </Typography>
         </Grid>
@@ -296,10 +320,12 @@ const SideBar = ({ children }) => {
             </ListItem>
           ))}
         </List>
-        <PopUp open={openPopUp} setOpen={setOpenPopUp} />
       </DrawerComp>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
+        <AlertLogin />
+        <AlertComp />
+        <LogOutComp open={openPopUp} setOpen={setOpenPopUp} />
         {children}
       </Box>
     </Box>

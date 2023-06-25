@@ -23,7 +23,7 @@ export default function PageNotFound() {
         The page you’re looking for doesn’t exist.
       </Typography>
 
-      <Link to="/dashboard" style={{ textDecoration: "none" }}>
+      <Link to="/" style={{ textDecoration: "none" }}>
         <Button variant="contained" sx={{ bgcolor: color2 }}>
           Back Home
         </Button>

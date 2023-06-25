@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { Fragment, useState } from "react";
-import SideBar from "../1.SideBar";
+import SideBar from "../../1.SideBar";
 
 const createData = (name, calories, fat, carbs, protein, price) => {
   return {
