@@ -5,8 +5,9 @@ import Chip from "@mui/joy/Chip";
 import Typography from "@mui/joy/Typography";
 import { IconButton } from "@mui/joy";
 import { Box, Grid } from "@mui/material";
+import { Link } from "react-router-dom";
 
-export default function CardComp({ header, icon, _color, jmlhData }) {
+export default function CardComp({ header, icon, _color, jmlhData, path }) {
   return (
     <Card
       variant="outlined"
@@ -53,16 +54,18 @@ export default function CardComp({ header, icon, _color, jmlhData }) {
         >
           {icon}
         </IconButton>
-        <Chip
-          variant="outlined"
-          color="primary"
-          size="sm"
-          sx={{
-            cursor: "pointer",
-          }}
-        >
-          {"View more ->"}
-        </Chip>
+        <Link to={path}>
+          <Chip
+            variant="outlined"
+            color="primary"
+            size="sm"
+            sx={{
+              cursor: "pointer",
+            }}
+          >
+            {"View more ->"}
+          </Chip>
+        </Link>
       </CardContent>
     </Card>
   );

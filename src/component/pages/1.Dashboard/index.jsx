@@ -68,6 +68,7 @@ const Dashboard = () => {
               icon={data.icon}
               _color={data.color}
               jmlhData={jmlhData[index]}
+              path={data.path}
             />
           </Grid>
         ))}

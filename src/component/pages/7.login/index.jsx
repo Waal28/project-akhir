@@ -174,18 +174,6 @@ export default function LoginPage() {
               <Grid container alignItems="center" justifyContent="center">
                 <ButtonGoogle />
               </Grid>
-              <Grid container sx={{ mt: 2 }}>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>
-              </Grid>
               <Copyright sx={{ mt: 5 }} />
             </Box>
           </Box>
