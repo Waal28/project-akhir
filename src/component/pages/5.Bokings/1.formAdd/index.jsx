@@ -20,7 +20,6 @@ import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import MuiPhoneNumber from "mui-phone-number";
 import { Close, Save } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -45,7 +44,7 @@ export default function FormAdd({ open, setOpen }) {
   const { updateData_Busses } = CRUD_busses();
 
   const dispatch = useDispatch();
-  const [noHp, setNoHp] = React.useState("");
+  const [, setNoHp] = React.useState("");
   const [bokings, setBokings] = React.useState({
     kode: `BK-${Math.floor(Math.random() * 9999) + 1000}`,
     pelanggan: "",
@@ -54,7 +53,7 @@ export default function FormAdd({ open, setOpen }) {
     rute: "",
     seats: "",
     harga: "",
-    w_keberangkatan: dayjs(new Date()),
+    w_keberangkatan: dayjs(),
     w_pemesanan: dayjs(new Date()),
   });
   const [bus, setBus] = React.useState({
@@ -98,7 +97,7 @@ export default function FormAdd({ open, setOpen }) {
     if (checkTrue) {
       console.log("berhasil");
       setBus(newData);
-      createData_Bokings({ ...bokings, noHp: noHp });
+      createData_Bokings(bokings);
       updateData_Busses(bus.id, { ...bus, seats: newData });
       setOpen(false);
       dispatch(setAlertOpen(true));
@@ -125,9 +124,6 @@ export default function FormAdd({ open, setOpen }) {
     }
   };
 
-  const handleChangePhone = (newValue) => {
-    setNoHp(newValue);
-  };
   const handleChangeBus = (e, newValue) => {
     let newData = dataBusses.find((data) => data.kode === newValue);
 
@@ -146,7 +142,26 @@ export default function FormAdd({ open, setOpen }) {
     if (newValue === null) {
       setBokings({ ...bokings, rute: newValue, harga: "" });
     } else {
-      setBokings({ ...bokings, rute: newValue, harga: newData.harga });
+      setBokings({
+        ...bokings,
+        rute: newValue,
+        harga: newData.harga,
+        w_keberangkatan: dayjs(new Date(newData.tanggal)),
+      });
+    }
+  };
+  const handleChangeCustomers = (e, newValue) => {
+    let newData = dataCustomers.find(
+      (cutomers) => cutomers.idCustomers === newValue
+    );
+    if (newValue === null) {
+      setBokings({ ...bokings, pelanggan: newValue, noHp: "" });
+    } else {
+      setBokings({
+        ...bokings,
+        pelanggan: newValue,
+        noHp: newData.noHp,
+      });
     }
   };
   return (
@@ -220,7 +235,7 @@ export default function FormAdd({ open, setOpen }) {
                     disablePortal
                     value={bokings.pelanggan}
                     onChange={(e, newValue) =>
-                      setBokings({ ...bokings, pelanggan: newValue })
+                      handleChangeCustomers(e, newValue)
                     }
                     options={customers}
                     fullWidth
@@ -234,17 +249,18 @@ export default function FormAdd({ open, setOpen }) {
                     )}
                   />
                 </Grid>
-                <Grid item={true} sm={12} lg={6} sx={{ mb: 2 }}>
+                {/* <Grid item={true} sm={12} lg={6} sx={{ mb: 2 }}>
                   <MuiPhoneNumber
                     defaultCountry={"id"}
                     label="No Telepon"
                     variant="filled"
                     value={noHp}
-                    onChange={handleChangePhone}
+                    readOnly
+                    // onChange={handleChangePhone}
                     fullWidth
                     required
                   />
-                </Grid>
+                </Grid> */}
                 <Grid item={true} sm={12} lg={6} sx={{ mb: 2 }}>
                   <TextField
                     id="filled-basic"
@@ -293,9 +309,7 @@ export default function FormAdd({ open, setOpen }) {
                       variant="filled"
                       label="Waktu Keberangkatan"
                       value={bokings.w_keberangkatan}
-                      onChange={(newValue) =>
-                        setBokings({ ...bokings, w_keberangkatan: newValue })
-                      }
+                      readOnly
                     />
                   </LocalizationProvider>
                 </Grid>

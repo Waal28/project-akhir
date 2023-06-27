@@ -20,7 +20,6 @@ import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import MuiPhoneNumber from "mui-phone-number";
 import { Close, Save } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -46,7 +45,6 @@ export default function FormUpdate({ open, setOpen }) {
   const { dataCustomers } = useSelector((state) => state.customers);
   const dispatch = useDispatch();
 
-  const [noHp] = React.useState("");
   const [bus, setBus] = React.useState({
     seats: [],
   });
@@ -81,7 +79,7 @@ export default function FormUpdate({ open, setOpen }) {
     if (checkTrue) {
       console.log("berhasil");
       setBus(newData);
-      updateData_Bokings({ ...dataById, noHp: noHp });
+      updateData_Bokings(dataById);
       updateData_Busses(bus.id, { ...bus, seats: newData });
       setOpen(false);
       dispatch(setAlertOpen(true));
@@ -90,10 +88,6 @@ export default function FormUpdate({ open, setOpen }) {
     } else {
       console.log("gagal");
     }
-  };
-
-  const handleChangePhone = (newValue) => {
-    dispatch(setDataById({ ...dataById, noHp: newValue }));
   };
   const handleChangeBus = (e, newValue) => {
     let newData = dataBusses.find((data) => data.kode === newValue);
@@ -115,6 +109,22 @@ export default function FormUpdate({ open, setOpen }) {
     } else {
       dispatch(
         setDataById({ ...dataById, rute: newValue, harga: newData.harga })
+      );
+    }
+  };
+  const handleChangeCustomers = (e, newValue) => {
+    let newData = dataCustomers.find(
+      (cutomers) => cutomers.idCustomers === newValue
+    );
+    if (newValue === null) {
+      dispatch(setDataById({ ...dataById, pelanggan: newValue, noHp: "" }));
+    } else {
+      dispatch(
+        setDataById({
+          ...dataById,
+          pelanggan: newValue,
+          noHp: newData.noHp,
+        })
       );
     }
   };
@@ -189,9 +199,7 @@ export default function FormUpdate({ open, setOpen }) {
                     disablePortal
                     value={dataById.pelanggan}
                     onChange={(e, newValue) =>
-                      dispatch(
-                        setDataById({ ...dataById, pelanggan: newValue })
-                      )
+                      handleChangeCustomers(e, newValue)
                     }
                     options={customers}
                     fullWidth
@@ -205,7 +213,7 @@ export default function FormUpdate({ open, setOpen }) {
                     )}
                   />
                 </Grid>
-                <Grid item={true} sm={12} lg={6} sx={{ mb: 2 }}>
+                {/* <Grid item={true} sm={12} lg={6} sx={{ mb: 2 }}>
                   <MuiPhoneNumber
                     defaultCountry={"id"}
                     label="No Telepon"
@@ -215,7 +223,7 @@ export default function FormUpdate({ open, setOpen }) {
                     fullWidth
                     required
                   />
-                </Grid>
+                </Grid> */}
                 <Grid item={true} sm={12} lg={6} sx={{ mb: 2 }}>
                   <TextField
                     id="filled-basic"

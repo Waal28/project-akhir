@@ -187,7 +187,7 @@ const SideBar = ({ children }) => {
           </IconButton>
           <Marquee speed={60}>
             <Typography variant="h6" noWrap component="div">
-              Welcome {user.name} (admin)
+              Selamat Datang {user.name} (admin)
             </Typography>
           </Marquee>
         </Toolbar>
