@@ -36,8 +36,8 @@ const DataBusses = () => {
     );
   };
 
-  function createData(no, code, busName, plat, tglInput, aksi) {
-    return { no, code, busName, plat, tglInput, aksi };
+  function createData(no, code, busName, plat, kursi, tglInput, aksi) {
+    return { no, code, busName, plat, kursi, tglInput, aksi };
   }
 
   const columns = [
@@ -62,6 +62,13 @@ const DataBusses = () => {
       // format: (value) => value.toLocaleString("en-US"),
     },
     {
+      id: "kursi",
+      label: "Kursi Tersedia",
+      minWidth: 100,
+      align: "center",
+      // format: (value) => value.toLocaleString("en-US"),
+    },
+    {
       id: "tglInput",
       label: "Waktu Input",
       minWidth: 100,
@@ -76,16 +83,18 @@ const DataBusses = () => {
       // format: (value) => value.toLocaleString("en-US"),
     },
   ];
-  const rows = dataBusses.map((d, index) =>
-    createData(
+  const rows = dataBusses.map((d, index) => {
+    let kursiFalse = d.seats.filter((data) => data.status === false);
+    return createData(
       index + 1,
       d.kode,
       d.nama,
       d.plat,
+      kursiFalse.length,
       d.tgl_input,
       _aksi(d.kode, d.id)
-    )
-  );
+    );
+  });
   return {
     columns,
     rows,

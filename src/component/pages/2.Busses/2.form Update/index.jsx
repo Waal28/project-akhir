@@ -38,7 +38,8 @@ export default function FormUpdate({ open, setOpen }) {
   const handleClose = () => {
     setOpen(false);
   };
-  const handleSave = () => {
+  const handleSave = (e) => {
+    e.preventDefault();
     updateData_Busses(dataById.id, dataById);
     setOpen(false);
     dispatch(setAlertOpen(true));
@@ -86,54 +87,56 @@ export default function FormUpdate({ open, setOpen }) {
             <Typography component="h3" variant="h5" align="center">
               Edit data bus
             </Typography>
-            <Grid container sx={{ mt: 2 }} spacing={2}>
-              <Grid item={true} sm={12} lg={12}>
-                <TextField
-                  id="filled-basic"
-                  label="Kode Bus (auto)"
-                  variant="filled"
-                  value={dataById.kode}
-                  readOnly
-                  fullWidth
-                  required
-                />
+            <form onSubmit={handleSave}>
+              <Grid container sx={{ mt: 2 }} spacing={2}>
+                <Grid item={true} sm={12} lg={12}>
+                  <TextField
+                    id="filled-basic"
+                    label="Kode Bus (auto)"
+                    variant="filled"
+                    value={dataById.kode}
+                    readOnly
+                    fullWidth
+                    required
+                  />
+                </Grid>
+                <Grid item={true} sm={12} lg={12}>
+                  <TextField
+                    id="filled-basic"
+                    label="Nama Bus"
+                    variant="filled"
+                    value={dataById.nama}
+                    onChange={(e) =>
+                      dispatch(
+                        setDataById({ ...dataById, nama: e.target.value })
+                      )
+                    }
+                    fullWidth
+                    required
+                  />
+                </Grid>
+                <Grid item={true} sm={12} lg={12}>
+                  <TextField
+                    id="filled-basic"
+                    label="No Plat"
+                    variant="filled"
+                    value={dataById.plat}
+                    onChange={(e) =>
+                      dispatch(
+                        setDataById({ ...dataById, plat: e.target.value })
+                      )
+                    }
+                    fullWidth
+                    required
+                  />
+                </Grid>
               </Grid>
-              <Grid item={true} sm={12} lg={12}>
-                <TextField
-                  id="filled-basic"
-                  label="Nama Bus"
-                  variant="filled"
-                  value={dataById.nama}
-                  onChange={(e) =>
-                    dispatch(setDataById({ ...dataById, nama: e.target.value }))
-                  }
-                  fullWidth
-                  required
-                />
+              <Grid container sx={{ mt: 5, justifyContent: "end" }}>
+                <Button type="submit" startIcon={<Save />} variant="contained">
+                  <span>Save</span>
+                </Button>
               </Grid>
-              <Grid item={true} sm={12} lg={12}>
-                <TextField
-                  id="filled-basic"
-                  label="No Plat"
-                  variant="filled"
-                  value={dataById.plat}
-                  onChange={(e) =>
-                    dispatch(setDataById({ ...dataById, plat: e.target.value }))
-                  }
-                  fullWidth
-                  required
-                />
-              </Grid>
-            </Grid>
-            <Grid container sx={{ mt: 5, justifyContent: "end" }}>
-              <Button
-                onClick={handleSave}
-                startIcon={<Save />}
-                variant="contained"
-              >
-                <span>Save</span>
-              </Button>
-            </Grid>
+            </form>
           </Paper>
         </Container>
       </ThemeProvider>

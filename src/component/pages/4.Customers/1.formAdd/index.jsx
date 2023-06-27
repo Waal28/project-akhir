@@ -15,6 +15,8 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import MuiPhoneNumber from "mui-phone-number";
+// import { MuiTelInput } from "mui-tel-input";
 import { Close, Save } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 import {
@@ -32,39 +34,39 @@ export default function FormAdd({ open, setOpen }) {
 
   const { createData_Customers } = CRUD_Customers();
   const dispatch = useDispatch();
+  const [noHp, setNoHp] = React.useState("");
   const [customers, setCustomers] = React.useState({
-    idCustomers: "",
+    idCustomers: `CS-${Math.floor(Math.random() * 9999) + 1000}`,
     nama: "",
-    noHp: "",
   });
   const handleClose = () => {
     setOpen(false);
   };
-  const handleSave = () => {
+  const handleSave = (e) => {
+    e.preventDefault();
     if (/[0-9]/.test(customers.nama)) {
       setOpen(false);
       dispatch(setAlertOpen(true));
       dispatch(setAlertStatus(false));
       dispatch(setAlertText("Nama pelanggan hanya bisa diisi dengan huruf"));
     } else {
-      createData_Customers(customers);
+      createData_Customers({ ...customers, noHp });
       setOpen(false);
       dispatch(setAlertOpen(true));
       dispatch(setAlertStatus(true));
       dispatch(setAlertText("Pelanggan berhasil ditambah"));
     }
+    setNoHp("");
     setCustomers({
-      idCustomers: "",
+      idCustomers: `CS-${Math.floor(Math.random() * 9999) + 1000}`,
       nama: "",
-      noHp: "",
     });
   };
-  React.useEffect(() => {
-    setCustomers({
-      ...customers,
-      idCustomers: `CS-${Math.floor(Math.random() * 9999) + 1000}`,
-    });
-  }, [open]);
+
+  const handleChangePhone = (newValue) => {
+    setNoHp(newValue);
+  };
+
   return (
     <Dialog
       fullScreen={fullScreen}
@@ -106,55 +108,50 @@ export default function FormAdd({ open, setOpen }) {
             <Typography component="h3" variant="h5" align="center">
               Tambah data pelanggan
             </Typography>
-            <Grid container sx={{ mt: 2 }} spacing={2}>
-              <Grid item={true} sm={12} lg={12}>
-                <TextField
-                  id="filled-basic"
-                  label="Id Pelanggan (auto)"
-                  variant="filled"
-                  value={customers.idCustomers}
-                  readOnly
-                  fullWidth
-                  required
-                />
+            <form onSubmit={handleSave}>
+              <Grid container sx={{ mt: 2 }} spacing={2}>
+                <Grid item={true} sm={12} lg={12}>
+                  <TextField
+                    id="filled-basic"
+                    label="Id Pelanggan (auto)"
+                    variant="filled"
+                    value={customers.idCustomers}
+                    readOnly
+                    fullWidth
+                    required
+                  />
+                </Grid>
+                <Grid item={true} sm={12} lg={12}>
+                  <TextField
+                    id="filled-basic"
+                    label="Nama Pelanggan"
+                    variant="filled"
+                    value={customers.nama}
+                    onChange={(e) =>
+                      setCustomers({ ...customers, nama: e.target.value })
+                    }
+                    fullWidth
+                    required
+                  />
+                </Grid>
+                <Grid item={true} sm={12} lg={12} sx={{ mt: 2 }}>
+                  <MuiPhoneNumber
+                    defaultCountry={"id"}
+                    label="No Telepon"
+                    variant="filled"
+                    value={noHp}
+                    onChange={handleChangePhone}
+                    fullWidth
+                    required
+                  />
+                </Grid>
               </Grid>
-              <Grid item={true} sm={12} lg={12}>
-                <TextField
-                  id="filled-basic"
-                  label="Nama Pelanggan"
-                  variant="filled"
-                  value={customers.nama}
-                  onChange={(e) =>
-                    setCustomers({ ...customers, nama: e.target.value })
-                  }
-                  fullWidth
-                  required
-                />
+              <Grid container sx={{ mt: 5, justifyContent: "end" }}>
+                <Button type="submit" startIcon={<Save />} variant="contained">
+                  <span>Save</span>
+                </Button>
               </Grid>
-              <Grid item={true} sm={12} lg={12}>
-                <TextField
-                  id="filled-basic"
-                  label="No Telepon"
-                  type="number"
-                  variant="filled"
-                  value={customers.noHp}
-                  onChange={(e) =>
-                    setCustomers({ ...customers, noHp: e.target.value })
-                  }
-                  fullWidth
-                  required
-                />
-              </Grid>
-            </Grid>
-            <Grid container sx={{ mt: 5, justifyContent: "end" }}>
-              <Button
-                onClick={handleSave}
-                startIcon={<Save />}
-                variant="contained"
-              >
-                <span>Save</span>
-              </Button>
-            </Grid>
+            </form>
           </Paper>
         </Container>
       </ThemeProvider>

@@ -46,7 +46,8 @@ export default function FormUpdate({ open, setOpen }) {
   const handleClose = () => {
     setOpen(false);
   };
-  const handleSave = () => {
+  const handleSave = (e) => {
+    e.preventDefault();
     updateData_Routes(dataById.id, dataById);
     setOpen(false);
     dispatch(setAlertOpen(true));
@@ -94,94 +95,94 @@ export default function FormUpdate({ open, setOpen }) {
             <Typography component="h3" variant="h5" align="center">
               Edit data rute
             </Typography>
-            <Grid container sx={{ mt: 2 }} spacing={2}>
-              <Grid item={true} sm={12} lg={12}>
-                <TextField
-                  id="filled-basic"
-                  label="Id Rute (auto)"
-                  variant="filled"
-                  value={dataById.idRoute}
-                  readOnly
-                  fullWidth
-                />
-              </Grid>
-              <Grid item={true} sm={12} lg={12}>
-                <TextField
-                  id="filled-basic"
-                  label="Jalur Kota"
-                  variant="filled"
-                  value={dataById.jalur}
-                  onChange={(e) =>
-                    dispatch(
-                      setDataById({ ...dataById, jalur: e.target.value })
-                    )
-                  }
-                  fullWidth
-                  required
-                />
-              </Grid>
-              <Grid item={true} sm={12} lg={12} sx={{ mt: 1, mb: 1.5 }}>
-                <Autocomplete
-                  disablePortal
-                  value={dataById.bus}
-                  onChange={(e, newValue) =>
-                    dispatch(setDataById({ ...dataById, bus: newValue }))
-                  }
-                  options={busses}
-                  sx={{ width: 300 }}
-                  renderInput={(params) => (
-                    <TextField {...params} label="Kode Bus" />
-                  )}
-                />
-              </Grid>
-              <Grid item={true} sm={6} lg={6}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    label="Tanggal Keberangkatan"
-                    value={dayjs(new Date(dataById.tanggal))}
-                    onChange={(newValue) =>
-                      dispatch(setDataById({ ...dataById, tanggal: newValue }))
-                    }
+            <form onSubmit={handleSave}>
+              <Grid container sx={{ mt: 2 }} spacing={2}>
+                <Grid item={true} sm={12} lg={12}>
+                  <TextField
+                    id="filled-basic"
+                    label="Id Rute (auto)"
+                    variant="filled"
+                    value={dataById.idRoute}
+                    readOnly
+                    fullWidth
                   />
-                </LocalizationProvider>
-              </Grid>
-              <Grid item={true} sm={6} lg={6}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <TimePicker
-                    label="Jam Keberangkatan"
-                    value={dayjs(new Date(dataById.jam))}
-                    onChange={(newValue) =>
-                      dispatch(setDataById({ ...dataById, jam: newValue }))
+                </Grid>
+                <Grid item={true} sm={12} lg={12}>
+                  <TextField
+                    id="filled-basic"
+                    label="Jalur Kota"
+                    variant="filled"
+                    value={dataById.jalur}
+                    onChange={(e) =>
+                      dispatch(
+                        setDataById({ ...dataById, jalur: e.target.value })
+                      )
                     }
+                    fullWidth
+                    required
                   />
-                </LocalizationProvider>
+                </Grid>
+                <Grid item={true} sm={12} lg={12} sx={{ mt: 1, mb: 1.5 }}>
+                  <Autocomplete
+                    disablePortal
+                    value={dataById.bus}
+                    onChange={(e, newValue) =>
+                      dispatch(setDataById({ ...dataById, bus: newValue }))
+                    }
+                    options={busses}
+                    sx={{ width: 300 }}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Kode Bus" />
+                    )}
+                  />
+                </Grid>
+                <Grid item={true} sm={6} lg={6}>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      label="Tanggal Keberangkatan"
+                      value={dayjs(new Date(dataById.tanggal))}
+                      onChange={(newValue) =>
+                        dispatch(
+                          setDataById({ ...dataById, tanggal: newValue })
+                        )
+                      }
+                    />
+                  </LocalizationProvider>
+                </Grid>
+                <Grid item={true} sm={6} lg={6}>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <TimePicker
+                      label="Jam Keberangkatan"
+                      value={dayjs(new Date(dataById.jam))}
+                      onChange={(newValue) =>
+                        dispatch(setDataById({ ...dataById, jam: newValue }))
+                      }
+                    />
+                  </LocalizationProvider>
+                </Grid>
+                <Grid item={true} sm={12} lg={12} sx={{ mb: 1 }}>
+                  <TextField
+                    id="filled-basic"
+                    label="Harga"
+                    type="number"
+                    variant="filled"
+                    value={dataById.harga}
+                    onChange={(e) =>
+                      dispatch(
+                        setDataById({ ...dataById, harga: e.target.value })
+                      )
+                    }
+                    fullWidth
+                    required
+                  />
+                </Grid>
               </Grid>
-              <Grid item={true} sm={12} lg={12} sx={{ mb: 1 }}>
-                <TextField
-                  id="filled-basic"
-                  label="Harga"
-                  type="number"
-                  variant="filled"
-                  value={dataById.harga}
-                  onChange={(e) =>
-                    dispatch(
-                      setDataById({ ...dataById, harga: e.target.value })
-                    )
-                  }
-                  fullWidth
-                  required
-                />
+              <Grid container sx={{ mt: 5, justifyContent: "end" }}>
+                <Button type="submit" startIcon={<Save />} variant="contained">
+                  <span>Save</span>
+                </Button>
               </Grid>
-            </Grid>
-            <Grid container sx={{ mt: 5, justifyContent: "end" }}>
-              <Button
-                onClick={handleSave}
-                startIcon={<Save />}
-                variant="contained"
-              >
-                <span>Save</span>
-              </Button>
-            </Grid>
+            </form>
           </Paper>
         </Container>
       </ThemeProvider>

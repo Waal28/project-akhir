@@ -15,6 +15,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import MuiPhoneNumber from "mui-phone-number";
 import { Close, Save } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -38,13 +39,18 @@ export default function FormUpdate({ open, setOpen }) {
   const handleClose = () => {
     setOpen(false);
   };
-  const handleSave = () => {
+  const handleSave = (e) => {
+    e.preventDefault();
     updateData_Customers(dataById.id, dataById);
     setOpen(false);
     dispatch(setAlertOpen(true));
     dispatch(setAlertStatus(true));
     dispatch(setAlertText("Data berhasil diupdate"));
   };
+  const handleChangePhone = (newValue) => {
+    dispatch(setDataById({ ...dataById, noHp: newValue }));
+  };
+
   return (
     <Dialog
       fullScreen={fullScreen}
@@ -86,33 +92,45 @@ export default function FormUpdate({ open, setOpen }) {
             <Typography component="h3" variant="h5" align="center">
               Edit data pelanggan
             </Typography>
-            <Grid container sx={{ mt: 2 }} spacing={2}>
-              <Grid item={true} sm={12} lg={12}>
-                <TextField
-                  id="filled-basic"
-                  label="Id Pelanggan (auto)"
-                  variant="filled"
-                  value={dataById.idCustomers}
-                  readOnly
-                  fullWidth
-                  required
-                />
-              </Grid>
-              <Grid item={true} sm={12} lg={12}>
-                <TextField
-                  id="filled-basic"
-                  label="Nama Pelanggan"
-                  variant="filled"
-                  value={dataById.nama}
-                  onChange={(e) =>
-                    dispatch(setDataById({ ...dataById, nama: e.target.value }))
-                  }
-                  fullWidth
-                  required
-                />
-              </Grid>
-              <Grid item={true} sm={12} lg={12}>
-                <TextField
+            <form onSubmit={handleSave}>
+              <Grid container sx={{ mt: 2 }} spacing={2}>
+                <Grid item={true} sm={12} lg={12}>
+                  <TextField
+                    id="filled-basic"
+                    label="Id Pelanggan (auto)"
+                    variant="filled"
+                    value={dataById.idCustomers}
+                    readOnly
+                    fullWidth
+                    required
+                  />
+                </Grid>
+                <Grid item={true} sm={12} lg={12}>
+                  <TextField
+                    id="filled-basic"
+                    label="Nama Pelanggan"
+                    variant="filled"
+                    value={dataById.nama}
+                    onChange={(e) =>
+                      dispatch(
+                        setDataById({ ...dataById, nama: e.target.value })
+                      )
+                    }
+                    fullWidth
+                    required
+                  />
+                </Grid>
+                <Grid item={true} sm={12} lg={12}>
+                  <MuiPhoneNumber
+                    defaultCountry={"id"}
+                    label="No Telepon"
+                    variant="filled"
+                    value={dataById.noHp}
+                    onChange={handleChangePhone}
+                    fullWidth
+                    required
+                  />
+                  {/* <TextField
                   id="filled-basic"
                   label="No Telepon"
                   variant="filled"
@@ -122,18 +140,15 @@ export default function FormUpdate({ open, setOpen }) {
                   }
                   fullWidth
                   required
-                />
+                /> */}
+                </Grid>
               </Grid>
-            </Grid>
-            <Grid container sx={{ mt: 5, justifyContent: "end" }}>
-              <Button
-                onClick={handleSave}
-                startIcon={<Save />}
-                variant="contained"
-              >
-                <span>Save</span>
-              </Button>
-            </Grid>
+              <Grid container sx={{ mt: 5, justifyContent: "end" }}>
+                <Button type="submit" startIcon={<Save />} variant="contained">
+                  <span>Save</span>
+                </Button>
+              </Grid>
+            </form>
           </Paper>
         </Container>
       </ThemeProvider>

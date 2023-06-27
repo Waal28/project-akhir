@@ -22,6 +22,7 @@ import {
   setAlertStatus,
   setAlertText,
 } from "../../../0.Store/comp";
+import { seats } from "./seats";
 import { CRUD_busses } from "../../../crud/busses";
 
 const defaultTheme = createTheme();
@@ -33,7 +34,7 @@ export default function FormAdd({ open, setOpen }) {
   const { createData_Busses } = CRUD_busses();
   const dispatch = useDispatch();
   const [bus, setBus] = React.useState({
-    kode: "",
+    kode: `BS-${Math.floor(Math.random() * 9999) + 1000}`,
     nama: "",
     plat: "",
     tgl_input: new Date().toLocaleString(),
@@ -41,29 +42,28 @@ export default function FormAdd({ open, setOpen }) {
   const handleClose = () => {
     setOpen(false);
   };
-  const handleSave = () => {
+  const handleSave = (e) => {
+    e.preventDefault();
     if (/[0-9]/.test(bus.nama)) {
       setOpen(false);
       dispatch(setAlertOpen(true));
       dispatch(setAlertStatus(false));
       dispatch(setAlertText("Nama bus hanya bisa diisi dengan huruf"));
     } else {
-      createData_Busses(bus);
+      createData_Busses({ ...bus, seats });
       setOpen(false);
       dispatch(setAlertOpen(true));
       dispatch(setAlertStatus(true));
       dispatch(setAlertText("Bus berhasil ditambah"));
     }
     setBus({
-      kode: "",
+      kode: `BS-${Math.floor(Math.random() * 9999) + 1000}`,
       nama: "",
       plat: "",
       tgl_input: new Date().toLocaleString(),
     });
   };
-  React.useEffect(() => {
-    setBus({ ...bus, kode: `BS-${Math.floor(Math.random() * 9999) + 1000}` });
-  }, [open]);
+
   return (
     <Dialog
       fullScreen={fullScreen}
@@ -105,50 +105,48 @@ export default function FormAdd({ open, setOpen }) {
             <Typography component="h3" variant="h5" align="center">
               Tambah data bus
             </Typography>
-            <Grid container sx={{ mt: 2 }} spacing={2}>
-              <Grid item={true} sm={12} lg={12}>
-                <TextField
-                  id="filled-basic"
-                  label="Kode Bus (auto)"
-                  variant="filled"
-                  value={bus.kode}
-                  readOnly
-                  fullWidth
-                  required
-                />
+            <form onSubmit={handleSave}>
+              <Grid container sx={{ mt: 2 }} spacing={2}>
+                <Grid item={true} sm={12} lg={12}>
+                  <TextField
+                    id="filled-basic"
+                    label="Kode Bus (auto)"
+                    variant="filled"
+                    value={bus.kode}
+                    readOnly
+                    fullWidth
+                    required
+                  />
+                </Grid>
+                <Grid item={true} sm={12} lg={12}>
+                  <TextField
+                    id="filled-basic"
+                    label="Nama Bus"
+                    variant="filled"
+                    value={bus.nama}
+                    onChange={(e) => setBus({ ...bus, nama: e.target.value })}
+                    fullWidth
+                    required
+                  />
+                </Grid>
+                <Grid item={true} sm={12} lg={12}>
+                  <TextField
+                    id="filled-basic"
+                    label="No Plat"
+                    variant="filled"
+                    value={bus.plat}
+                    onChange={(e) => setBus({ ...bus, plat: e.target.value })}
+                    fullWidth
+                    required
+                  />
+                </Grid>
               </Grid>
-              <Grid item={true} sm={12} lg={12}>
-                <TextField
-                  id="filled-basic"
-                  label="Nama Bus"
-                  variant="filled"
-                  value={bus.nama}
-                  onChange={(e) => setBus({ ...bus, nama: e.target.value })}
-                  fullWidth
-                  required
-                />
+              <Grid container sx={{ mt: 5, justifyContent: "end" }}>
+                <Button type="submit" startIcon={<Save />} variant="contained">
+                  <span>Save</span>
+                </Button>
               </Grid>
-              <Grid item={true} sm={12} lg={12}>
-                <TextField
-                  id="filled-basic"
-                  label="No Plat"
-                  variant="filled"
-                  value={bus.plat}
-                  onChange={(e) => setBus({ ...bus, plat: e.target.value })}
-                  fullWidth
-                  required
-                />
-              </Grid>
-            </Grid>
-            <Grid container sx={{ mt: 5, justifyContent: "end" }}>
-              <Button
-                onClick={handleSave}
-                startIcon={<Save />}
-                variant="contained"
-              >
-                <span>Save</span>
-              </Button>
-            </Grid>
+            </form>
           </Paper>
         </Container>
       </ThemeProvider>

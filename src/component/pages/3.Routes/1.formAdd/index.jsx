@@ -40,7 +40,7 @@ export default function FormAdd({ open, setOpen }) {
   const { createData_Routes } = CRUD_Routes();
   const dispatch = useDispatch();
   const [rute, setRute] = React.useState({
-    idRoute: "",
+    idRoute: `RT-${Math.floor(Math.random() * 9999) + 1000}`,
     jalur: "",
     bus: "",
     tanggal: dayjs(new Date()),
@@ -51,7 +51,8 @@ export default function FormAdd({ open, setOpen }) {
   const handleClose = () => {
     setOpen(false);
   };
-  const handleSave = () => {
+  const handleSave = (e) => {
+    e.preventDefault();
     if (/[0-9]/.test(rute.jalur)) {
       setOpen(false);
       dispatch(setAlertOpen(true));
@@ -66,7 +67,7 @@ export default function FormAdd({ open, setOpen }) {
     }
     console.log(rute);
     setRute({
-      idRoute: "",
+      idRoute: `RT-${Math.floor(Math.random() * 9999) + 1000}`,
       jalur: "",
       bus: "",
       tanggal: dayjs(new Date()),
@@ -74,12 +75,6 @@ export default function FormAdd({ open, setOpen }) {
       harga: "",
     });
   };
-  React.useEffect(() => {
-    setRute({
-      ...rute,
-      idRoute: `RT-${Math.floor(Math.random() * 9999) + 1000}`,
-    });
-  }, [open]);
   return (
     <Dialog
       fullScreen={fullScreen}
@@ -121,84 +116,88 @@ export default function FormAdd({ open, setOpen }) {
             <Typography component="h3" variant="h5" align="center">
               Tambah data rute
             </Typography>
-            <Grid container sx={{ mt: 2 }} spacing={2}>
-              <Grid item={true} sm={12} lg={12}>
-                <TextField
-                  id="filled-basic"
-                  label="Id Rute (auto)"
-                  variant="filled"
-                  value={rute.idRoute}
-                  readOnly
-                  fullWidth
-                />
-              </Grid>
-              <Grid item={true} sm={12} lg={12}>
-                <TextField
-                  id="filled-basic"
-                  label="Jalur Kota"
-                  variant="filled"
-                  value={rute.jalur}
-                  onChange={(e) => setRute({ ...rute, jalur: e.target.value })}
-                  fullWidth
-                  required
-                />
-              </Grid>
-              <Grid item={true} sm={12} lg={12} sx={{ mt: 1, mb: 1.5 }}>
-                <Autocomplete
-                  disablePortal
-                  value={rute.bus}
-                  onChange={(e, newValue) =>
-                    setRute({ ...rute, bus: newValue })
-                  }
-                  options={busses}
-                  sx={{ width: 300 }}
-                  renderInput={(params) => (
-                    <TextField {...params} label="Kode Bus" />
-                  )}
-                />
-              </Grid>
-              <Grid item={true} sm={6} lg={6}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    label="Tanggal Keberangkatan"
-                    value={rute.tanggal}
-                    onChange={(newValue) =>
-                      setRute({ ...rute, tanggal: newValue })
+            <form onSubmit={handleSave}>
+              <Grid container sx={{ mt: 2 }} spacing={2}>
+                <Grid item={true} sm={12} lg={12}>
+                  <TextField
+                    id="filled-basic"
+                    label="Id Rute (auto)"
+                    variant="filled"
+                    value={rute.idRoute}
+                    readOnly
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item={true} sm={12} lg={12}>
+                  <TextField
+                    id="filled-basic"
+                    label="Jalur Kota"
+                    variant="filled"
+                    value={rute.jalur}
+                    onChange={(e) =>
+                      setRute({ ...rute, jalur: e.target.value })
                     }
+                    fullWidth
+                    required
                   />
-                </LocalizationProvider>
-              </Grid>
-              <Grid item={true} sm={6} lg={6}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <TimePicker
-                    label="Jam Keberangkatan"
-                    value={rute.jam}
-                    onChange={(newValue) => setRute({ ...rute, jam: newValue })}
+                </Grid>
+                <Grid item={true} sm={12} lg={12} sx={{ mt: 1, mb: 1.5 }}>
+                  <Autocomplete
+                    disablePortal
+                    value={rute.bus}
+                    onChange={(e, newValue) =>
+                      setRute({ ...rute, bus: newValue })
+                    }
+                    options={busses}
+                    sx={{ width: 300 }}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Kode Bus" />
+                    )}
                   />
-                </LocalizationProvider>
+                </Grid>
+                <Grid item={true} sm={6} lg={6}>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      label="Tanggal Keberangkatan"
+                      value={rute.tanggal}
+                      onChange={(newValue) =>
+                        setRute({ ...rute, tanggal: newValue })
+                      }
+                    />
+                  </LocalizationProvider>
+                </Grid>
+                <Grid item={true} sm={6} lg={6}>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <TimePicker
+                      label="Jam Keberangkatan"
+                      value={rute.jam}
+                      onChange={(newValue) =>
+                        setRute({ ...rute, jam: newValue })
+                      }
+                    />
+                  </LocalizationProvider>
+                </Grid>
+                <Grid item={true} sm={12} lg={12} sx={{ mb: 1 }}>
+                  <TextField
+                    id="filled-basic"
+                    label="Harga"
+                    type="number"
+                    variant="filled"
+                    value={rute.harga}
+                    onChange={(e) =>
+                      setRute({ ...rute, harga: e.target.value })
+                    }
+                    fullWidth
+                    required
+                  />
+                </Grid>
               </Grid>
-              <Grid item={true} sm={12} lg={12} sx={{ mb: 1 }}>
-                <TextField
-                  id="filled-basic"
-                  label="Harga"
-                  type="number"
-                  variant="filled"
-                  value={rute.harga}
-                  onChange={(e) => setRute({ ...rute, harga: e.target.value })}
-                  fullWidth
-                  required
-                />
+              <Grid container sx={{ mt: 5, justifyContent: "end" }}>
+                <Button type="submit" startIcon={<Save />} variant="contained">
+                  <span>Save</span>
+                </Button>
               </Grid>
-            </Grid>
-            <Grid container sx={{ mt: 5, justifyContent: "end" }}>
-              <Button
-                onClick={handleSave}
-                startIcon={<Save />}
-                variant="contained"
-              >
-                <span>Save</span>
-              </Button>
-            </Grid>
+            </form>
           </Paper>
         </Container>
       </ThemeProvider>

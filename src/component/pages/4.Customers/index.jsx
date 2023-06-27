@@ -49,6 +49,7 @@ const Customers = () => {
   }, [credential, usernameStorage, navigate]);
   useEffect(() => {
     fetchData_Customers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <Grid container>
